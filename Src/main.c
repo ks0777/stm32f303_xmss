@@ -16,10 +16,8 @@ int main(void)
 
   while (1)
   {
+      toggle_pin();
       HAL_Delay(500);
-      trigger_set(1);
-      HAL_Delay(500);
-      trigger_set(0);
   }
 }
 
