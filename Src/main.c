@@ -10,9 +10,9 @@ int main(void)
 {
   HAL_Init();
 
-  trigger_init();
 
   SystemClock_Config();
+  trigger_init();
 
   while (1)
   {

@@ -3,7 +3,6 @@
 
 #include <stdbool.h>
 #include <stm32f3xx_hal.h>
-#include <stm32f3xx_hal_gpio.h>
 
 #define TRIGGER_PORT		GPIOC
 #define TRIGGER_PIN 		GPIO_PIN_13
