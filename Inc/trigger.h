@@ -11,5 +11,6 @@
 
 void trigger_init(void);
 void trigger_set(bool state);
+void toggle_pin();
 
 #endif /* __TRIGGER_H__ */
