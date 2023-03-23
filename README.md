@@ -1,1 +1,1 @@
-# STM32F303 XSSS Firmware
+# STM32F303 XMSS Firmware
