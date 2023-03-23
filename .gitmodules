@@ -1,0 +1,6 @@
+[submodule "xmss-reference"]
+	path = xmss-reference
+	url = https://github.com/XMSS/xmss-reference.git
+[submodule "tinycrypt"]
+	path = tinycrypt
+	url = https://github.com/intel/tinycrypt.git

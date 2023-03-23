@@ -28,6 +28,10 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f3xx_hal.h"
+#include <wots.h>
+#include <params.h>
+#include <stdint.h>
+#include <string.h>
 #include "trigger.h"
 
 /* Private includes ----------------------------------------------------------*/

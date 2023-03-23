@@ -10,14 +10,47 @@ int main(void)
 {
   HAL_Init();
 
-
   SystemClock_Config();
   trigger_init();
 
+  xmss_params params;
+  xmss_parse_oid(&params, 0xd);
+
+  unsigned char seed[params.n];
+  unsigned char pub_seed[params.n];
+  unsigned char pk1[params.wots_sig_bytes];
+  unsigned char pk2[params.wots_sig_bytes];
+  unsigned char sig[params.wots_sig_bytes];
+  unsigned char m[params.n];
+  uint32_t addr[8] = {0};
+  
+  memset(addr, '\0', 8 * sizeof(uint32_t));
+  memset(seed, '\0', params.n);
+  memset(pub_seed, '\0', params.n);
+  memset(m, '\xff', params.n);
+  m[0] = '\xef';
+  
+  wots_pkgen(&params, pk1, seed, pub_seed, addr);
+  wots_sign(&params, sig, m, seed, pub_seed, addr);
+  
+  m[0] = '\xff'; // Set first messagechunk to biggest possible value
+  unsigned char overwrite[] = "\xA9\xE6\x8B\xAE\x2A\xB5\x44\xA9\x64\x21\xBA\x15\x27\x82\xC2\x30\xE0\x93\x6C\x19\x36\xC8\x66\x8F";
+  memcpy(sig, overwrite, 24); // Overwrite hash of first chain with the correct value for the forged message chunk
+  unsigned char overwrite2[] = "\xEB\xB4\xC5\xD7\xF0\xFC\x5F\x10\xAD\x9C\xFB\xDD\x9F\x02\x49\xFB\x57\xF1\xE3\x5F\x66\x50\xE5\x44";
+  memcpy(sig + params.wots_sig_bytes - params.n , overwrite2, 24); // Overwrite hash of checksum chain with the final value from the public key for the new checksum. This chain will be faulted such that no further hashes are performed.
+  
+  wots_pk_from_sig(&params, pk2, sig, m, pub_seed, addr);
+  
+  if (memcmp(pk1, pk2, params.wots_sig_bytes)) {
+    trigger_set(true);
+    HAL_Delay(500);
+    trigger_set(false);
+  } else {
+    trigger_set(true);
+  }
+
   while (1)
   {
-      toggle_pin();
-      HAL_Delay(500);
   }
 }
 
