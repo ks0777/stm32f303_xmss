@@ -42,11 +42,7 @@ int main(void)
   wots_pk_from_sig(&params, pk2, sig, m, pub_seed, addr);
   
   if (memcmp(pk1, pk2, params.wots_sig_bytes)) {
-    trigger_set(true);
     HAL_Delay(500);
-    trigger_set(false);
-  } else {
-    trigger_set(true);
   }
 
   while (1)
